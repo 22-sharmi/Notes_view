@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Class Notes</title>
+<title>ClassView</title>
 
 <style>
 * {
@@ -14,272 +14,864 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: #f5f5f5;
+    background: #f4f6f8;
     color: #222;
 }
 
-/* ================= HOME PAGE ================= */
+/* =====================================================
+   STUDENT HOME PAGE
+   ===================================================== */
 
 #homePage {
-    max-width: 1000px;
-    margin: 40px auto;
+    max-width: 1100px;
+    margin: 35px auto;
     padding: 20px;
 }
 
-.content {
+.student-content {
     background: white;
     min-height: 500px;
-    padding: 30px;
-    border-radius: 10px;
-    font-size: 19px;
-    line-height: 1.7;
+    padding: 35px;
+    border-radius: 12px;
+    font-size: 18px;
+    line-height: 1.75;
+    overflow-wrap: anywhere;
 
-    /* Students cannot select/copy */
     user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;
     -webkit-touch-callout: none;
 }
 
+.student-content h1 {
+    font-size: 32px;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.student-content h2 {
+    font-size: 26px;
+    margin-top: 30px;
+}
+
+.student-content h3 {
+    font-size: 22px;
+    margin-top: 25px;
+}
+
+.student-content ul,
+.student-content ol {
+    padding-left: 30px;
+}
+
 .placeholder {
     color: #999;
 }
 
-/* ================= ME PAGE ================= */
+
+/* =====================================================
+   ME PAGE
+   ===================================================== */
 
 #mePage {
     display: none;
-    max-width: 1000px;
-    margin: 40px auto;
-    padding: 20px;
+    width: 100%;
+    min-height: 100vh;
+    background: #f1f3f5;
 }
 
-textarea {
+
+/* TOP BAR */
+
+.editor-header {
+    height: 60px;
+    background: #111827;
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 20px;
+}
+
+.editor-title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.editor-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.editor-actions button {
+    border: none;
+    padding: 9px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.clear-button {
+    background: #ef4444;
+    color: white;
+}
+
+
+/* EDITOR TOOLBAR */
+
+.toolbar {
+    background: white;
+    border-bottom: 1px solid #ddd;
+
+    padding: 10px 15px;
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.toolbar button,
+.toolbar select {
+    border: 1px solid #ccc;
+    background: white;
+
+    padding: 7px 11px;
+
+    border-radius: 5px;
+    cursor: pointer;
+
+    font-size: 14px;
+}
+
+.toolbar button:hover,
+.toolbar select:hover {
+    background: #f0f0f0;
+}
+
+
+/* EDITOR AREA */
+
+.editor-container {
+    max-width: 1100px;
+    margin: 25px auto;
+    padding: 0 20px;
+}
+
+#editor {
     width: 100%;
-    min-height: 500px;
-    padding: 25px;
-    font-family: Arial, sans-serif;
+    min-height: 650px;
+
+    background: white;
+
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+
+    padding: 30px;
+
+    outline: none;
+
     font-size: 18px;
     line-height: 1.7;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    resize: vertical;
-    outline: none;
-    background: white;
+
+    overflow-wrap: anywhere;
 }
 
-textarea:focus {
-    border-color: #555;
+#editor:focus {
+    border-color: #777;
 }
 
-button {
-    margin-top: 12px;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 6px;
-    background: #e53935;
-    color: white;
+
+/* PLACEHOLDER */
+
+#editor:empty:before {
+    content: attr(data-placeholder);
+    color: #aaa;
+}
+
+
+/* =====================================================
+   CODE BLOCK
+   ===================================================== */
+
+.code-block {
+    margin: 20px 0;
+
+    background: #1e1e1e;
+
+    border-radius: 8px;
+
+    overflow: hidden;
+
+    font-family:
+        Consolas,
+        "Courier New",
+        monospace;
+
     font-size: 15px;
-    cursor: pointer;
+
+    line-height: 1.6;
+
+    color: #d4d4d4;
 }
 
-button:hover {
-    background: #c62828;
+
+/* CODE HEADER */
+
+.code-header {
+    background: #252526;
+
+    padding: 7px 12px;
+
+    color: #aaa;
+
+    font-size: 12px;
+
+    border-bottom: 1px solid #333;
+}
+
+
+/* CODE BODY */
+
+.code-body {
+    display: flex;
+
+    overflow-x: auto;
+}
+
+
+/* LINE NUMBERS */
+
+.line-numbers {
+    padding: 12px 12px;
+
+    text-align: right;
+
+    color: #858585;
+
+    background: #1e1e1e;
+
+    border-right: 1px solid #333;
+
+    user-select: none;
+
+    min-width: 50px;
+}
+
+
+/* CODE TEXT */
+
+.code-text {
+    padding: 12px 16px;
+
+    white-space: pre;
+
+    flex: 1;
+}
+
+
+/* =====================================================
+   SYNTAX COLORS
+   ===================================================== */
+
+.keyword {
+    color: #569cd6;
+}
+
+.function {
+    color: #dcdcaa;
+}
+
+.number {
+    color: #b5cea8;
+}
+
+.string {
+    color: #ce9178;
+}
+
+.comment {
+    color: #6a9955;
+}
+
+.constant {
+    color: #4ec9b0;
+}
+
+.type {
+    color: #4ec9b0;
+}
+
+
+/* =====================================================
+   HOME PAGE CODE
+   ===================================================== */
+
+.student-content .code-block {
+    user-select: none;
+}
+
+
+/* =====================================================
+   RESPONSIVE
+   ===================================================== */
+
+@media (max-width: 700px) {
+
+    .student-content {
+        padding: 20px;
+        font-size: 16px;
+    }
+
+    #editor {
+        padding: 20px;
+    }
+
+    .editor-title {
+        font-size: 17px;
+    }
+
 }
 </style>
-
 </head>
 
 <body>
 
 
-<!-- ==================================================
-     HOME PAGE
-     URL:
-     file:///C:/Users/sharm/OneDrive/Documents/index.html
-     ================================================== -->
+<!-- =====================================================
+     STUDENT HOME PAGE
+     index.html
+     ===================================================== -->
 
 <div id="homePage">
 
     <div
-        id="content"
-        class="content"
+        id="studentContent"
+        class="student-content"
         oncontextmenu="return false;"
         oncopy="return false;"
         oncut="return false;"
         ondragstart="return false;"
     >
+
         <span class="placeholder">
             Content will appear here.
         </span>
+
     </div>
 
 </div>
 
 
-<!-- ==================================================
+
+<!-- =====================================================
      ME PAGE
-     URL:
-     file:///C:/Users/sharm/OneDrive/Documents/index.html?me
-     ================================================== -->
+     index.html?me
+     ===================================================== -->
 
 <div id="mePage">
 
-    <textarea
-        id="editor"
-        placeholder="Type or paste your content here..."
-    ></textarea>
+    <!-- HEADER -->
 
-    <br>
+    <div class="editor-header">
 
-    <button onclick="clearContent()">Clear</button>
+        <div class="editor-title">
+            ClassView Editor
+        </div>
+
+        <div class="editor-actions">
+
+            <button
+                class="clear-button"
+                onclick="clearAll()"
+            >
+                Clear
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- TOOLBAR -->
+
+    <div class="toolbar">
+
+        <button onclick="formatText('bold')">
+            <b>B</b>
+        </button>
+
+        <button onclick="formatText('italic')">
+            <i>I</i>
+        </button>
+
+        <button onclick="formatText('underline')">
+            <u>U</u>
+        </button>
+
+        <button onclick="formatBlock('h1')">
+            H1
+        </button>
+
+        <button onclick="formatBlock('h2')">
+            H2
+        </button>
+
+        <button onclick="formatBlock('h3')">
+            H3
+        </button>
+
+        <button onclick="formatText('insertUnorderedList')">
+            • List
+        </button>
+
+        <button onclick="formatText('insertOrderedList')">
+            1. List
+        </button>
+
+        <button onclick="addCodeBlock()">
+            &lt;/&gt; Code
+        </button>
+
+    </div>
+
+
+    <!-- EDITOR -->
+
+    <div class="editor-container">
+
+        <div
+            id="editor"
+            contenteditable="true"
+            data-placeholder="Start typing your notes here..."
+        ></div>
+
+    </div>
 
 </div>
 
 
+
 <script>
 
-/* ===============================
-   GET ELEMENTS
-   =============================== */
+/* =====================================================
+   ELEMENTS
+   ===================================================== */
 
-const homePage = document.getElementById("homePage");
-const mePage = document.getElementById("mePage");
-const editor = document.getElementById("editor");
-const content = document.getElementById("content");
+const homePage =
+    document.getElementById("homePage");
 
+const mePage =
+    document.getElementById("mePage");
 
-/* ===============================
-   SHOW SAVED CONTENT
-   =============================== */
+const editor =
+    document.getElementById("editor");
 
-function loadContent() {
-
-    const savedContent = localStorage.getItem("classContent");
-
-    if (savedContent && savedContent.trim() !== "") {
-
-        content.textContent = savedContent;
-
-        editor.value = savedContent;
-
-    } else {
-
-        content.innerHTML =
-            '<span class="placeholder">Content will appear here.</span>';
-
-        editor.value = "";
-    }
-}
+const studentContent =
+    document.getElementById("studentContent");
 
 
-/* ===============================
-   SHOW THE CORRECT PAGE
-   =============================== */
+/* =====================================================
+   CHECK ?ME
+   ===================================================== */
 
 function checkPage() {
-
-    /*
-       If URL contains ?me
-       show the teacher page.
-    */
 
     if (window.location.search === "?me") {
 
         homePage.style.display = "none";
+
         mePage.style.display = "block";
 
-        loadContent();
-
-    }
-
-    /*
-       Normal URL
-       show the student page.
-    */
-
-    else {
-
-        homePage.style.display = "block";
-        mePage.style.display = "none";
-
-        loadContent();
-    }
-}
-
-
-/* ===============================
-   TYPING / SAVING
-   =============================== */
-
-editor.addEventListener("input", function() {
-
-    const text = editor.value;
-
-    /*
-       Save permanently in this browser.
-    */
-
-    localStorage.setItem("classContent", text);
-
-    /*
-       Update home page immediately.
-    */
-
-    if (text.trim() !== "") {
-
-        content.textContent = text;
+        loadEditor();
 
     } else {
 
-        content.innerHTML =
-            '<span class="placeholder">Content will appear here.</span>';
+        homePage.style.display = "block";
+
+        mePage.style.display = "none";
+
+        loadStudentContent();
+
     }
 
-});
-
-
-/* ===============================
-   CLEAR BUTTON
-   =============================== */
-
-function clearContent() {
-
-    editor.value = "";
-
-    localStorage.removeItem("classContent");
-
-    content.innerHTML =
-        '<span class="placeholder">Content will appear here.</span>';
-
-    editor.focus();
 }
 
 
-/* ===============================
-   PREVENT COPYING ON HOME PAGE
-   =============================== */
+/* =====================================================
+   LOAD SAVED CONTENT
+   ===================================================== */
 
-content.addEventListener("copy", function(e) {
-    e.preventDefault();
+function loadEditor() {
+
+    const saved =
+        localStorage.getItem("classViewContent");
+
+    if (saved) {
+
+        editor.innerHTML = saved;
+
+    }
+
+}
+
+
+function loadStudentContent() {
+
+    const saved =
+        localStorage.getItem("classViewContent");
+
+    if (saved && saved.trim() !== "") {
+
+        studentContent.innerHTML = saved;
+
+    } else {
+
+        studentContent.innerHTML =
+            '<span class="placeholder">Content will appear here.</span>';
+
+    }
+
+}
+
+
+/* =====================================================
+   AUTO SAVE
+   ===================================================== */
+
+editor.addEventListener("input", function() {
+
+    saveContent();
+
 });
 
-content.addEventListener("cut", function(e) {
-    e.preventDefault();
-});
 
-content.addEventListener("contextmenu", function(e) {
-    e.preventDefault();
-});
+function saveContent() {
 
-content.addEventListener("selectstart", function(e) {
-    e.preventDefault();
-});
+    localStorage.setItem(
+        "classViewContent",
+        editor.innerHTML
+    );
+
+}
 
 
-/* ===============================
+/* =====================================================
+   BASIC TEXT FORMATTING
+   ===================================================== */
+
+function formatText(command) {
+
+    editor.focus();
+
+    document.execCommand(command, false, null);
+
+    saveContent();
+
+}
+
+
+function formatBlock(tag) {
+
+    editor.focus();
+
+    document.execCommand(
+        "formatBlock",
+        false,
+        tag
+    );
+
+    saveContent();
+
+}
+
+
+/* =====================================================
+   ADD CODE BLOCK
+   ===================================================== */
+
+function addCodeBlock() {
+
+    const code =
+`void setup() {
+  pinMode(13, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(13, HIGH);
+  delay(1000);
+  digitalWrite(13, LOW);
+  delay(1000);
+}`;
+
+    const codeBlock =
+        createCodeBlock(code, "Arduino / C++");
+
+    insertAtCursor(codeBlock);
+
+    saveContent();
+
+}
+
+
+/* =====================================================
+   CREATE CODE BLOCK
+   ===================================================== */
+
+function createCodeBlock(code, language) {
+
+    const wrapper =
+        document.createElement("div");
+
+    wrapper.className = "code-block";
+
+    const header =
+        document.createElement("div");
+
+    header.className = "code-header";
+
+    header.textContent = language;
+
+
+    const body =
+        document.createElement("div");
+
+    body.className = "code-body";
+
+
+    const lines =
+        document.createElement("div");
+
+    lines.className = "line-numbers";
+
+
+    const codeText =
+        document.createElement("div");
+
+    codeText.className = "code-text";
+
+
+    const split =
+        code.split("\n");
+
+
+    split.forEach(function(line, index) {
+
+        const number =
+            document.createElement("div");
+
+        number.textContent =
+            index + 1;
+
+        lines.appendChild(number);
+
+
+        const lineElement =
+            document.createElement("div");
+
+        lineElement.innerHTML =
+            highlightCode(line);
+
+        codeText.appendChild(lineElement);
+
+    });
+
+
+    body.appendChild(lines);
+
+    body.appendChild(codeText);
+
+    wrapper.appendChild(header);
+
+    wrapper.appendChild(body);
+
+    return wrapper;
+
+}
+
+
+/* =====================================================
+   CODE HIGHLIGHTING
+   ===================================================== */
+
+function highlightCode(line) {
+
+    let text = escapeHTML(line);
+
+
+    /* COMMENTS */
+
+    if (text.trim().startsWith("//")) {
+
+        return '<span class="comment">' +
+               text +
+               '</span>';
+
+    }
+
+
+    /* STRINGS */
+
+    text = text.replace(
+        /(&quot;.*?&quot;|&#39;.*?&#39;)/g,
+
+        '<span class="string">$1</span>'
+    );
+
+
+    /* KEYWORDS */
+
+    text = text.replace(
+        /\b(void|int|float|double|char|bool|if|else|for|while|return|class|const|static|switch|case|break|continue|true|false)\b/g,
+
+        '<span class="keyword">$1</span>'
+    );
+
+
+    /* ARDUINO CONSTANTS */
+
+    text = text.replace(
+        /\b(HIGH|LOW|INPUT|OUTPUT|INPUT_PULLUP|LED_BUILTIN)\b/g,
+
+        '<span class="constant">$1</span>'
+    );
+
+
+    /* NUMBERS */
+
+    text = text.replace(
+        /\b\d+(\.\d+)?\b/g,
+
+        '<span class="number">$&</span>'
+    );
+
+
+    /* FUNCTION NAMES */
+
+    text = text.replace(
+        /\b([A-Za-z_][A-Za-z0-9_]*)\s*(?=\()/g,
+
+        '<span class="function">$1</span>'
+    );
+
+
+    return text;
+
+}
+
+
+/* =====================================================
+   ESCAPE HTML
+   ===================================================== */
+
+function escapeHTML(text) {
+
+    return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+
+}
+
+
+/* =====================================================
+   INSERT AT CURSOR
+   ===================================================== */
+
+function insertAtCursor(element) {
+
+    editor.focus();
+
+    const selection =
+        window.getSelection();
+
+    if (!selection.rangeCount) {
+
+        editor.appendChild(element);
+
+        return;
+
+    }
+
+    const range =
+        selection.getRangeAt(0);
+
+    range.deleteContents();
+
+    range.insertNode(element);
+
+    range.setStartAfter(element);
+
+    range.collapse(true);
+
+    selection.removeAllRanges();
+
+    selection.addRange(range);
+
+}
+
+
+/* =====================================================
+   CLEAR EVERYTHING
+   ===================================================== */
+
+function clearAll() {
+
+    const answer =
+        confirm("Clear all content?");
+
+    if (!answer) {
+        return;
+    }
+
+    editor.innerHTML = "";
+
+    localStorage.removeItem(
+        "classViewContent"
+    );
+
+}
+
+
+/* =====================================================
+   BLOCK STUDENT ACTIONS
+   ===================================================== */
+
+studentContent.addEventListener(
+    "copy",
+    function(e) {
+        e.preventDefault();
+    }
+);
+
+studentContent.addEventListener(
+    "cut",
+    function(e) {
+        e.preventDefault();
+    }
+);
+
+studentContent.addEventListener(
+    "contextmenu",
+    function(e) {
+        e.preventDefault();
+    }
+);
+
+studentContent.addEventListener(
+    "selectstart",
+    function(e) {
+        e.preventDefault();
+    }
+);
+
+
+/* =====================================================
    START
-   =============================== */
+   ===================================================== */
 
 checkPage();
 
