@@ -95,6 +95,8 @@ body {
     font-size: 15px;
 
     line-height: 1.6;
+
+    user-select: none;
 }
 
 .student-code-title {
@@ -111,6 +113,8 @@ body {
 
 .student-code-content {
     display: flex;
+
+    align-items: flex-start;
 }
 
 .student-line-numbers {
@@ -127,6 +131,15 @@ body {
     min-width: 50px;
 
     user-select: none;
+
+    font-family:
+        Consolas,
+        "Courier New",
+        monospace;
+
+    font-size: 15px;
+
+    line-height: 1.6;
 }
 
 .student-code-lines {
@@ -135,6 +148,35 @@ body {
     white-space: pre;
 
     flex: 1;
+
+    font-family:
+        Consolas,
+        "Courier New",
+        monospace;
+
+    font-size: 15px;
+
+    line-height: 1.6;
+
+    margin: 0;
+}
+
+
+/* IMPORTANT:
+   Every individual code line gets the
+   exact same height and spacing.
+*/
+
+.student-code-line {
+    display: block;
+
+    height: 24px;
+
+    line-height: 24px;
+
+    margin: 0;
+
+    padding: 0;
 }
 
 
@@ -168,10 +210,6 @@ body {
 
 .syntax-constant {
     color: #4fc1ff;
-}
-
-.syntax-operator {
-    color: #d4d4d4;
 }
 
 
@@ -509,7 +547,7 @@ body {
 
 
 /* =========================================================
-   CODE PREVIEW
+   PREVIEW
    ========================================================= */
 
 .preview-section {
@@ -579,7 +617,6 @@ body {
 
 <!-- =========================================================
      STUDENT PAGE
-     index.html
      ========================================================= -->
 
 <div id="homePage">
@@ -606,13 +643,10 @@ body {
 
 <!-- =========================================================
      ME PAGE
-     index.html?me
      ========================================================= -->
 
 <div id="mePage">
 
-
-    <!-- HEADER -->
 
     <div class="editor-header">
 
@@ -634,8 +668,6 @@ body {
     </div>
 
 
-
-    <!-- TOOLBAR -->
 
     <div class="toolbar">
 
@@ -675,9 +707,7 @@ body {
 
 
 
-    <!-- =====================================================
-         NORMAL NOTES
-         ===================================================== -->
+    <!-- NOTES -->
 
     <div class="notes-container">
 
@@ -691,9 +721,7 @@ body {
 
 
 
-    <!-- =====================================================
-         CODE EDITOR
-         ===================================================== -->
+    <!-- CODE EDITOR -->
 
     <div class="code-editor-section">
 
@@ -706,7 +734,7 @@ body {
             <select
                 id="language"
                 class="language-select"
-                onchange="updateCodeNumbers()"
+                onchange="languageChanged()"
             >
 
                 <option value="arduino">
@@ -731,8 +759,7 @@ body {
             <div
                 id="codeNumbers"
                 class="code-numbers"
-            >
-            </div>
+            ></div>
 
 
             <textarea
@@ -760,9 +787,7 @@ body {
 
 
 
-    <!-- =====================================================
-         PREVIEW
-         ===================================================== -->
+    <!-- PREVIEW -->
 
     <div class="preview-section">
 
@@ -773,11 +798,9 @@ body {
         <div
             id="editorPreview"
             class="preview-box"
-        >
-        </div>
+        ></div>
 
     </div>
-
 
 </div>
 
@@ -816,7 +839,7 @@ const editorPreview =
 
 
 /* =========================================================
-   CHECK PAGE
+   PAGE
    ========================================================= */
 
 function checkPage() {
@@ -843,7 +866,7 @@ function checkPage() {
 
 
 /* =========================================================
-   LOAD EVERYTHING
+   LOAD EDITOR
    ========================================================= */
 
 function loadEverything() {
@@ -860,21 +883,24 @@ function loadEverything() {
 
     if (notes) {
 
-        notesEditor.innerHTML = notes;
+        notesEditor.innerHTML =
+            notes;
 
     }
 
 
     if (code) {
 
-        codeInput.value = code;
+        codeInput.value =
+            code;
 
     }
 
 
     if (savedLanguage) {
 
-        language.value = savedLanguage;
+        language.value =
+            savedLanguage;
 
     }
 
@@ -902,37 +928,30 @@ function loadStudentPage() {
         localStorage.getItem("classViewLanguage");
 
 
-    let finalHTML = "";
+    let html = "";
 
-
-    /* NOTES */
 
     if (notes) {
 
-        finalHTML += notes;
+        html += notes;
 
     }
 
 
-    /* CODE */
-
     if (code && code.trim() !== "") {
 
-        const lang =
-            savedLanguage || "arduino";
-
-        finalHTML += createStudentCode(
+        html += createStudentCode(
             code,
-            lang
+            savedLanguage || "arduino"
         );
 
     }
 
 
-    if (finalHTML.trim() !== "") {
+    if (html.trim() !== "") {
 
         studentContent.innerHTML =
-            finalHTML;
+            html;
 
     } else {
 
@@ -945,7 +964,7 @@ function loadStudentPage() {
 
 
 /* =========================================================
-   NORMAL NOTES AUTO SAVE
+   NOTES SAVE
    ========================================================= */
 
 notesEditor.addEventListener(
@@ -964,7 +983,7 @@ notesEditor.addEventListener(
 
 
 /* =========================================================
-   FORMAT TEXT
+   FORMATTING
    ========================================================= */
 
 function formatText(command) {
@@ -1008,36 +1027,35 @@ function formatBlock(tag) {
 
 
 /* =========================================================
-   REAL CODE EDITOR
+   CODE LINE NUMBERS
    ========================================================= */
-
-
-/* UPDATE LINE NUMBERS */
 
 function updateCodeNumbers() {
 
-    const lines =
+    const lineCount =
         codeInput.value.split("\n").length;
 
-    let numbers = "";
+    let html = "";
 
     for (
         let i = 1;
-        i <= lines;
+        i <= lineCount;
         i++
     ) {
 
-        numbers += i + "<br>";
+        html += i + "<br>";
 
     }
 
     codeNumbers.innerHTML =
-        numbers;
+        html;
 
 }
 
 
-/* TYPE CODE */
+/* =========================================================
+   CODE INPUT
+   ========================================================= */
 
 codeInput.addEventListener(
     "input",
@@ -1049,7 +1067,9 @@ codeInput.addEventListener(
 );
 
 
-/* SCROLL NUMBERS WITH CODE */
+/* =========================================================
+   CODE SCROLL
+   ========================================================= */
 
 codeInput.addEventListener(
     "scroll",
@@ -1062,7 +1082,9 @@ codeInput.addEventListener(
 );
 
 
-/* TAB KEY */
+/* =========================================================
+   TAB
+   ========================================================= */
 
 codeInput.addEventListener(
     "keydown",
@@ -1078,6 +1100,7 @@ codeInput.addEventListener(
             const end =
                 codeInput.selectionEnd;
 
+
             codeInput.value =
                 codeInput.value.substring(
                     0,
@@ -1090,11 +1113,13 @@ codeInput.addEventListener(
                     end
                 );
 
+
             codeInput.selectionStart =
                 start + 2;
 
             codeInput.selectionEnd =
                 start + 2;
+
 
             updateCodeNumbers();
 
@@ -1145,7 +1170,39 @@ function clearCode() {
 
 
 /* =========================================================
-   CODE SYNTAX HIGHLIGHTING
+   LANGUAGE
+   ========================================================= */
+
+function languageChanged() {
+
+    localStorage.setItem(
+        "classViewLanguage",
+        language.value
+    );
+
+    updatePreview();
+
+}
+
+
+/* =========================================================
+   ESCAPE
+   ========================================================= */
+
+function escapeHTML(text) {
+
+    return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+
+}
+
+
+/* =========================================================
+   HIGHLIGHT CODE
    ========================================================= */
 
 function highlightCode(
@@ -1166,6 +1223,7 @@ function highlightCode(
 
         text = text.replace(
             /(\/\/.*)/g,
+
             '<span class="syntax-comment">$1</span>'
         );
 
@@ -1178,6 +1236,7 @@ function highlightCode(
 
         text = text.replace(
             /(#.*)/g,
+
             '<span class="syntax-comment">$1</span>'
         );
 
@@ -1188,6 +1247,7 @@ function highlightCode(
 
     text = text.replace(
         /(&quot;.*?&quot;|&#39;.*?&#39;)/g,
+
         '<span class="syntax-string">$1</span>'
     );
 
@@ -1210,7 +1270,7 @@ function highlightCode(
     );
 
 
-    /* ARDUINO CONSTANTS */
+    /* ARDUINO */
 
     text = text.replace(
         /\b(HIGH|LOW|INPUT|OUTPUT|INPUT_PULLUP|LED_BUILTIN|SERIAL|LSBFIRST|MSBFIRST)\b/g,
@@ -1228,7 +1288,7 @@ function highlightCode(
     );
 
 
-    /* FUNCTION NAMES */
+    /* FUNCTIONS */
 
     text = text.replace(
         /\b([A-Za-z_][A-Za-z0-9_]*)\s*(?=\()/g,
@@ -1243,23 +1303,7 @@ function highlightCode(
 
 
 /* =========================================================
-   ESCAPE HTML
-   ========================================================= */
-
-function escapeHTML(text) {
-
-    return text
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#39;");
-
-}
-
-
-/* =========================================================
-   CREATE STUDENT CODE
+   STUDENT CODE
    ========================================================= */
 
 function createStudentCode(
@@ -1267,7 +1311,7 @@ function createStudentCode(
     selectedLanguage
 ) {
 
-    const languageNames = {
+    const names = {
 
         arduino:
             "Arduino / C++",
@@ -1282,7 +1326,7 @@ function createStudentCode(
 
 
     const title =
-        languageNames[selectedLanguage]
+        names[selectedLanguage]
         ||
         "Code";
 
@@ -1291,33 +1335,27 @@ function createStudentCode(
         code.split("\n");
 
 
-    let lineNumbers = "";
+    let numbers = "";
 
-    let highlightedCode = "";
+    let codeHTML = "";
 
 
     lines.forEach(
         function(line, index) {
 
-            lineNumbers +=
+            numbers +=
+                '<div class="student-code-line">' +
                 (index + 1) +
-                "<br>";
+                '</div>';
 
-            highlightedCode +=
+
+            codeHTML +=
+                '<div class="student-code-line">' +
                 highlightCode(
                     line,
                     selectedLanguage
-                );
-
-            if (
-                index <
-                lines.length - 1
-            ) {
-
-                highlightedCode +=
-                    "<br>";
-
-            }
+                ) +
+                '</div>';
 
         }
     );
@@ -1334,11 +1372,11 @@ function createStudentCode(
             <div class="student-code-content">
 
                 <div class="student-line-numbers">
-                    ${lineNumbers}
+                    ${numbers}
                 </div>
 
                 <div class="student-code-lines">
-                    ${highlightedCode}
+                    ${codeHTML}
                 </div>
 
             </div>
@@ -1351,7 +1389,7 @@ function createStudentCode(
 
 
 /* =========================================================
-   UPDATE PREVIEW
+   PREVIEW
    ========================================================= */
 
 function updatePreview() {
@@ -1364,9 +1402,6 @@ function updatePreview() {
 
     const code =
         codeInput.value;
-
-    const selectedLanguage =
-        language.value;
 
 
     if (
@@ -1386,7 +1421,7 @@ function updatePreview() {
 
         html += createStudentCode(
             code,
-            selectedLanguage
+            language.value
         );
 
     }
@@ -1405,25 +1440,6 @@ function updatePreview() {
     }
 
 }
-
-
-/* =========================================================
-   LANGUAGE CHANGE
-   ========================================================= */
-
-language.addEventListener(
-    "change",
-    function() {
-
-        localStorage.setItem(
-            "classViewLanguage",
-            language.value
-        );
-
-        updatePreview();
-
-    }
-);
 
 
 /* =========================================================
@@ -1468,42 +1484,34 @@ function clearEverything() {
 
 
 /* =========================================================
-   BLOCK COPYING ON STUDENT PAGE
+   STUDENT PROTECTION
    ========================================================= */
 
 studentContent.addEventListener(
     "copy",
     function(e) {
-
         e.preventDefault();
-
     }
 );
 
 studentContent.addEventListener(
     "cut",
     function(e) {
-
         e.preventDefault();
-
     }
 );
 
 studentContent.addEventListener(
     "contextmenu",
     function(e) {
-
         e.preventDefault();
-
     }
 );
 
 studentContent.addEventListener(
     "selectstart",
     function(e) {
-
         e.preventDefault();
-
     }
 );
 
