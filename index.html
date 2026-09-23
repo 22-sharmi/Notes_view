@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Class Notes</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+    color: #222;
+}
+
+/* ================= HOME PAGE ================= */
+
+#homePage {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.content {
+    background: white;
+    min-height: 500px;
+    padding: 30px;
+    border-radius: 10px;
+    font-size: 19px;
+    line-height: 1.7;
+
+    /* Students cannot select/copy */
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -webkit-touch-callout: none;
+}
+
+.placeholder {
+    color: #999;
+}
+
+/* ================= ME PAGE ================= */
+
+#mePage {
+    display: none;
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+textarea {
+    width: 100%;
+    min-height: 500px;
+    padding: 25px;
+    font-family: Arial, sans-serif;
+    font-size: 18px;
+    line-height: 1.7;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    resize: vertical;
+    outline: none;
+    background: white;
+}
+
+textarea:focus {
+    border-color: #555;
+}
+
+button {
+    margin-top: 12px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    background: #e53935;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #c62828;
+}
+</style>
+
+</head>
+
+<body>
+
+
+<!-- ==================================================
+     HOME PAGE
+     URL:
+     file:///C:/Users/sharm/OneDrive/Documents/index.html
+     ================================================== -->
+
+<div id="homePage">
+
+    <div
+        id="content"
+        class="content"
+        oncontextmenu="return false;"
+        oncopy="return false;"
+        oncut="return false;"
+        ondragstart="return false;"
+    >
+        <span class="placeholder">
+            Content will appear here.
+        </span>
+    </div>
+
+</div>
+
+
+<!-- ==================================================
+     ME PAGE
+     URL:
+     file:///C:/Users/sharm/OneDrive/Documents/index.html?me
+     ================================================== -->
+
+<div id="mePage">
+
+    <textarea
+        id="editor"
+        placeholder="Type or paste your content here..."
+    ></textarea>
+
+    <br>
+
+    <button onclick="clearContent()">Clear</button>
+
+</div>
+
+
+<script>
+
+/* ===============================
+   GET ELEMENTS
+   =============================== */
+
+const homePage = document.getElementById("homePage");
+const mePage = document.getElementById("mePage");
+const editor = document.getElementById("editor");
+const content = document.getElementById("content");
+
+
+/* ===============================
+   SHOW SAVED CONTENT
+   =============================== */
+
+function loadContent() {
+
+    const savedContent = localStorage.getItem("classContent");
+
+    if (savedContent && savedContent.trim() !== "") {
+
+        content.textContent = savedContent;
+
+        editor.value = savedContent;
+
+    } else {
+
+        content.innerHTML =
+            '<span class="placeholder">Content will appear here.</span>';
+
+        editor.value = "";
+    }
+}
+
+
+/* ===============================
+   SHOW THE CORRECT PAGE
+   =============================== */
+
+function checkPage() {
+
+    /*
+       If URL contains ?me
+       show the teacher page.
+    */
+
+    if (window.location.search === "?me") {
+
+        homePage.style.display = "none";
+        mePage.style.display = "block";
+
+        loadContent();
+
+    }
+
+    /*
+       Normal URL
+       show the student page.
+    */
+
+    else {
+
+        homePage.style.display = "block";
+        mePage.style.display = "none";
+
+        loadContent();
+    }
+}
+
+
+/* ===============================
+   TYPING / SAVING
+   =============================== */
+
+editor.addEventListener("input", function() {
+
+    const text = editor.value;
+
+    /*
+       Save permanently in this browser.
+    */
+
+    localStorage.setItem("classContent", text);
+
+    /*
+       Update home page immediately.
+    */
+
+    if (text.trim() !== "") {
+
+        content.textContent = text;
+
+    } else {
+
+        content.innerHTML =
+            '<span class="placeholder">Content will appear here.</span>';
+    }
+
+});
+
+
+/* ===============================
+   CLEAR BUTTON
+   =============================== */
+
+function clearContent() {
+
+    editor.value = "";
+
+    localStorage.removeItem("classContent");
+
+    content.innerHTML =
+        '<span class="placeholder">Content will appear here.</span>';
+
+    editor.focus();
+}
+
+
+/* ===============================
+   PREVENT COPYING ON HOME PAGE
+   =============================== */
+
+content.addEventListener("copy", function(e) {
+    e.preventDefault();
+});
+
+content.addEventListener("cut", function(e) {
+    e.preventDefault();
+});
+
+content.addEventListener("contextmenu", function(e) {
+    e.preventDefault();
+});
+
+content.addEventListener("selectstart", function(e) {
+    e.preventDefault();
+});
+
+
+/* ===============================
+   START
+   =============================== */
+
+checkPage();
+
+</script>
+
+</body>
+</html>
